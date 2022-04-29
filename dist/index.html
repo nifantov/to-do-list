@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./style.css">
+    <script src="./main.js" defer></script>
+    <title>Todo list</title>
+</head>
+<body>
+    <header>
+        <h1>Todo list</h1>
+    </header>
+    <main class="main">
+        <div class="menu">
+            <div class="byDate">
+                <button class="button" id="all">All tasks</button>
+                <button class="button" id="today">Today</button>
+                <button class="button" id="week">This week</button>
+                <button class="button" id="someday">Someday</button>
+            </div>
+            <div class="byLabel" id="labels">
+                <button class="label">No label</button>
+            </div>
+            <div id="addLabelContainer">
+            <button class="button add" id="addLabel">+label</button>
+            </div>
+        </div>
+        <div class="display">
+            <h2>Label</h2>
+            <div class="task-list" id="task-list">
+<!--                 <button class="task-container">
+                    <div class="task-left">
+                        <p class="task-content">First task</p>
+                    </div>
+                    <div class="task-right">
+                        <p class="date">Date</p>
+                    </div>
+                </button> -->
+            </div>
+            <div id="addTaskContainer">
+                <button class="button add" id="addTask">+task</button>    
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>This is a project for <a href="#">The Odin Project</a> in which I have to make a game using SOLID.</p> 
+        <p>You can also view the <a href="#">Github repository</a> of this project.</p>
+    </footer>
+</body>
+</html>

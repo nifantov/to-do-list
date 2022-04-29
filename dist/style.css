@@ -1,0 +1,120 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-size: 20px;
+    
+}
+
+:root {
+    --gray: rgb(241, 241, 241);
+    --black: #555555;
+    --blue: #005d96;
+    --gap-s: 5px;
+    --gap-n: 10px;
+    --gap-l: 30px;
+    --gap-xl: 60px;
+}
+header {
+    background-color: var(--blue);
+    padding: 10px 20px;
+
+    
+}
+
+footer {
+    margin: 40px auto 0px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 80vw; 
+  }
+
+h1 {
+    font-size: 48px;
+    text-align: left;
+    color: white;
+}
+
+button {
+    background-color: white;
+    color: var(--blue);
+    border: 2px solid var(--blue); 
+    padding: 12px 12px;
+    transition-duration: 0.4s;
+    font-size: 20px;
+
+  }
+
+button:hover {
+    background-color: var(--blue); 
+    color: white;
+    cursor: pointer;
+    transform: translateY(-2px);
+    
+  }
+
+a {
+	position: relative;
+	color: var(--blue); 
+	cursor: pointer;
+	line-height: 1; 
+	text-decoration: none; 
+
+}
+a:after {
+	display: block;
+	position: absolute;
+	left: 0; 
+	width: 0;
+	height: 2px; 
+	background-color: var(--blue); 
+	content: "";
+	transition: width 0.3s ease-out; 
+}
+
+a:hover:after,
+a:focus:after {
+	width: 100%; 
+}
+
+body {
+    background-color: bisque;
+    width: 100vw;
+}
+
+.main {
+    display: flex;    
+    height: 80vh;
+}
+
+.menu {
+    display: flex;
+    flex-direction: column;
+    width: 400px;
+    justify-content: flex-start;
+    background-color: var(--black);
+    height: fit-content;
+}
+
+.byDate, .byLabel, .task-list {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap:var(--gap-n);
+    padding: var(--gap-l);
+}
+.display {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-n);
+    width: 800px;
+    padding: 20px 60px;
+}
+
+.task-container {
+    display: flex;
+    justify-content: space-between;
+    padding: var(--gap-n);
+    align-items: center;
+}
