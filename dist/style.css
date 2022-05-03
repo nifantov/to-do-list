@@ -112,9 +112,60 @@ body {
     padding: 20px 60px;
 }
 
-.task-container {
+.task {
     display: flex;
     justify-content: space-between;
     padding: var(--gap-n);
     align-items: center;
+}
+
+.notactive {
+    display: none;
+}
+
+.active {
+    display: flex;
+}
+
+
+.task {
+    display: flex;
+    align-items: center;
+    gap:var(--gap-n);
+}
+
+.checkbox {
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--blue);
+}
+
+.task-name {
+    margin-right: auto;
+}
+
+.edit-button {
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--blue);
+}
+
+.remove-button {
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--blue);
+}
+
+.accept {
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--blue);
+}
+
+.date {
+    width: 120px;
+}
+
+h2 {
+    text-align: center;
 }

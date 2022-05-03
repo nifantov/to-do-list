@@ -1,110 +1,104 @@
 
+import Input from "./Input";
+import Catalog from "./Catalog";
+import Label from "./Label";
+import Task from "./Task";
+import LocalStorage from "./LocalStorage";
+
+const catalog = new Catalog;
+
 
 export default class UI {
 
     static load() {
+
+        UI.install();
+        
+        
+        const firstLabel = new Label("First Label")
+        const secondLabel = new Label ("Second Label")
+        catalog.addLabel(firstLabel);
+        catalog.addLabel(secondLabel);
+        firstLabel.addTask(new Task("first Task 1", "First Label"));
+        firstLabel.addTask(new Task("second Task 1", "First Label", "2022-05-03"));
+        secondLabel.addTask(new Task("first Task 22222222", "Second Label", "2022-05-05"))
+        
+        
+        catalog.loadLabelList();
+        catalog.getLabel("First Label").openLabel();
         UI.buttonsListeners();
+        LocalStorage.saveCatalog(catalog);
         console.log("load")
     }
 
     static buttonsListeners() {
         const addLabelButton = document.getElementById("addLabel");
-        const addTaskButton = document.getElementById("addTask")
+        const addTaskButton = document.getElementById("addTask");
         
         addLabelButton.onclick = () => createLabel.open();
-        addTaskButton.onclick = () => {
-     
-            addLabel.open("task-list");
+        addTaskButton.onclick = () => createTask.open();   
+
+        const labelsButtons = document.querySelectorAll(".label");
+        labelsButtons.forEach((label) => {
+            label.onclick = () => {
+                const labelName = label.textContent;
+                catalog.getLabel(labelName).openLabel()
+            };
+        }) 
+
+    }
+
+    static add(type, name) {
+        if (type === "label") {
+            catalog.addLabel(new Label(name));
+            catalog.getLabel(name).create()
+            catalog.getLabel(name).openLabel();
+            UI.buttonsListeners();
+            
+        }
+        else if (type === "task") {
+            const labelName = document.getElementById("label-name").textContent;     
+            catalog.getLabel(labelName).addTask(new Task(name, labelName));
+            catalog.getLabel(labelName).findTask(name).create();
+
         }
     }
+
+    static clearTaskList() {
+        const taskList = document.getElementById("task-list");
+        taskList.innerHTML = "";
+    }
+
+    static loadTaskList(labelName) {
+        const currentLabel = catalog.getLabel(labelName);
+        const labelTitle = document.getElementById("label-name");
+        labelTitle.textContent = labelName;
+        currentLabel.tasks.forEach(task => task.create());
+    }
+
+    static deleteTask(label, task) {
+        catalog.deleteTask(label, task);
+        console.log(catalog)
+    }
     
-
-
-
-
-    //Creating content
-    static create(value, id) {
-       /* id === "addLabelContainer" ? UI.createLabel(value) : UI.createTask(value); */
-
+    static install() {
+        catalog.addLabel(new Label("All tasks"));
+        catalog.addLabel(new Label("Today"));
+        catalog.addLabel(new Label("This week"));
+        catalog.addLabel(new Label("Someday"));
+        
     }
 
-    static createLabel(newLabel) {
-        const labels = document.getElementById("labels");
-        const label = document.createElement("button")
-        label.textContent = newLabel;
-        labels.appendChild(label)
-        Input.close();
+    static updateDefaultLabels() {
+        const allTasks = catalog.getLabel("All tasks");
+        const today = catalog.getLabel("Today");
+        const week = catalog.getLabel("This week");
+        const someDay = catalog.getLabel("Someday");
+
     }
-
-    static createTask(newTask) {
-        const tasks = document.getElementById("task-list");
-        const task = document.createElement("button")
-        task.textContent = newTask;
-        tasks.appendChild(task)
-        Input.close();
-    }
-
- 
-
 
 }
 
 
-
-
-
-class Input {
-
-    constructor(type, idButton, idContainer) {
-        this.type = type;
-        this.idButton = idButton;
-        this.idContainer = idContainer;
-    }
-
-     open() {
-        const labels = document.getElementById(this.idButton);
-
-        const input = document.createElement("input")
-        const acceptButton = document.createElement("button");
-        const cancelButton = document.createElement("button");
-
-        acceptButton.textContent = "yes";
-        cancelButton.textContent = "no";
-
-        acceptButton.id = "acceptButton";
-        cancelButton.id = "cancelButton";
-
-        acceptButton.onclick = () => this.create(input.value);
-        cancelButton.onclick = () => Input.close()
-
-        labels.appendChild(input);
-        labels.appendChild(acceptButton)
-        labels.appendChild(cancelButton)
-        
-        console.log("open");
-    }
-
-     create(value) {
-        console.log("create")
-        const container = document.getElementById(this.idContainer);
-        const element = document.createElement("button");
-        element.textContent = value;
-        container.appendChild(element);
-        Input.close();
-    }
-
-    static close() {
-        const input = document.querySelector("input");
-        const acceptButton = document.getElementById("acceptButton");
-        const cancelButton = document.getElementById("cancelButton");
-        
-        input.remove();
-        acceptButton.remove();
-        cancelButton.remove()
-        console.log("close")
-    }
-
-}
-
-const createLabel = new Input("label", "addLabelContainer", "labels");
-//const createTask = new Input("")
+const createLabel = new Input("label", "addLabelContainer", "label-list", "addLabel");
+const createTask = new Input("task", "addTaskContainer", "task-list", "addTask");
