@@ -1,6 +1,6 @@
 import Catalog from "./Catalog";
 import UI from "./UI";
-
+import format from "date-fns/format";
 export default class Task {
     constructor(name, label, date = "no date") {
         this.name = name;
@@ -26,8 +26,18 @@ export default class Task {
     getDate() {
         return this.date;
     }
+
+    dateFormat() {
+        const day = this.date.split('/')[0]
+        const month = this.date.split('/')[1]
+        const year = this.date.split('/')[2]
+        return `${month}/${day}/${year}`
+      }
+
      
     create() {
+        
+        
         const container = document.getElementById("task-list");
 
         const task = document.createElement("div");
@@ -55,31 +65,35 @@ export default class Task {
             editBtn.classList.add("notactive");
             checkbox.after(input);
             input.after(accept);
+            
             accept.onclick = () => {
-                this.setName(input.value);
+                UI.renameTask(this.label, this.name, input.value);
+                console.log(input.value)
                 input.remove();
                 accept.remove();
                 taskName.classList.remove("notactive");
                 editBtn.classList.remove("notactive");
                 taskName.textContent = (input.value);
+                
             }
         }
 
         const removeBtn = document.createElement("div");
         removeBtn.classList.add("remove-button");
         removeBtn.onclick = () => {
-            task.remove()
+            task.remove();
+            
             UI.deleteTask(this.label, this.name);
         };
 
         const inputDate = document.createElement("input");
         inputDate.type = "date";
         inputDate.addEventListener("change", () => {
-            this.setDate(inputDate.value);
-            date.textContent = this.date;
+            const newDate = format(new Date(inputDate.value), 'dd/MM/yyyy');
+            UI.changeDate(this.label, this.name, newDate);
+            date.textContent = newDate;
             inputDate.remove();
             date.classList.remove("notactive");
-
         })
 
         const date = document.createElement("div");
@@ -90,9 +104,6 @@ export default class Task {
             task.appendChild(inputDate);
         }
 
-        
-
-
         container.appendChild(task);
         task.appendChild(checkbox);
         task.appendChild(taskName);
@@ -100,6 +111,10 @@ export default class Task {
         task.appendChild(removeBtn);
         task.appendChild(date);
     }
+
+  
+
+
 
 
 }

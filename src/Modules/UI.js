@@ -5,44 +5,34 @@ import Label from "./Label";
 import Task from "./Task";
 import LocalStorage from "./LocalStorage";
 
-const catalog = new Catalog;
+
 
 
 export default class UI {
 
     static load() {
-
-        UI.install();
         
-        
-        const firstLabel = new Label("First Label")
-        const secondLabel = new Label ("Second Label")
-        catalog.addLabel(firstLabel);
-        catalog.addLabel(secondLabel);
-        firstLabel.addTask(new Task("first Task 1", "First Label"));
-        firstLabel.addTask(new Task("second Task 1", "First Label", "2022-05-03"));
-        secondLabel.addTask(new Task("first Task 22222222", "Second Label", "2022-05-05"))
-        
-        
+        const catalog = LocalStorage.getCatalog();
         catalog.loadLabelList();
-        catalog.getLabel("First Label").openLabel();
+        
+        UI.openDefaultLabel();
         UI.buttonsListeners();
-        LocalStorage.saveCatalog(catalog);
-        console.log("load")
+        
     }
 
     static buttonsListeners() {
         const addLabelButton = document.getElementById("addLabel");
         const addTaskButton = document.getElementById("addTask");
-        
+        UI.updateDefaultLabels();
         addLabelButton.onclick = () => createLabel.open();
         addTaskButton.onclick = () => createTask.open();   
 
-        const labelsButtons = document.querySelectorAll(".label");
-        labelsButtons.forEach((label) => {
+        const labelsButtons = document.querySelectorAll(".label-name");
+        labelsButtons.forEach(label => {
             label.onclick = () => {
                 const labelName = label.textContent;
-                catalog.getLabel(labelName).openLabel()
+                LocalStorage.getCatalog().getLabel(labelName).openLabel();
+                UI.buttonsListeners()
             };
         }) 
 
@@ -50,17 +40,17 @@ export default class UI {
 
     static add(type, name) {
         if (type === "label") {
-            catalog.addLabel(new Label(name));
-            catalog.getLabel(name).create()
-            catalog.getLabel(name).openLabel();
+            LocalStorage.addLabel(new Label(name));
+            LocalStorage.getCatalog().getLabel(name).create()
+            LocalStorage.getCatalog().getLabel(name).openLabel();
             UI.buttonsListeners();
-            
         }
-        else if (type === "task") {
-            const labelName = document.getElementById("label-name").textContent;     
-            catalog.getLabel(labelName).addTask(new Task(name, labelName));
-            catalog.getLabel(labelName).findTask(name).create();
 
+        else if (type === "task") {
+            const labelName = document.getElementById("label-name").textContent; 
+            LocalStorage.addTask(labelName, name);
+            
+            
         }
     }
 
@@ -70,33 +60,44 @@ export default class UI {
     }
 
     static loadTaskList(labelName) {
-        const currentLabel = catalog.getLabel(labelName);
+        const currentLabel = LocalStorage.getCatalog().getLabel(labelName);
         const labelTitle = document.getElementById("label-name");
         labelTitle.textContent = labelName;
         currentLabel.tasks.forEach(task => task.create());
-    }
-
-    static deleteTask(label, task) {
-        catalog.deleteTask(label, task);
-        console.log(catalog)
-    }
-    
-    static install() {
-        catalog.addLabel(new Label("All tasks"));
-        catalog.addLabel(new Label("Today"));
-        catalog.addLabel(new Label("This week"));
-        catalog.addLabel(new Label("Someday"));
         
     }
 
-    static updateDefaultLabels() {
-        const allTasks = catalog.getLabel("All tasks");
-        const today = catalog.getLabel("Today");
-        const week = catalog.getLabel("This week");
-        const someDay = catalog.getLabel("Someday");
-
+    static renameTask(label, task, newName) {
+        LocalStorage.renameTask(label, task, newName);
     }
 
+    static changeDate(label, task, newDate) {
+        LocalStorage.changeDate(label, task, newDate);
+    }
+
+    static deleteLabel(label) {
+        LocalStorage.deleteLabel(label);
+        UI.openDefaultLabel();
+    }
+
+    static deleteTask(label, task) {
+        LocalStorage.deleteTask(label, task);
+    }
+
+    static openDefaultLabel() {
+        const catalog = LocalStorage.getCatalog();
+        catalog.getLabel("Today").openLabel(); 
+        
+    }
+    /////
+    static updateDefaultLabels() {
+        
+        LocalStorage.updateAllTasks();
+    }
+
+
+
+   
 }
 
 

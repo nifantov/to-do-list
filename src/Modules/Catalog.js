@@ -1,9 +1,12 @@
 import Label from "./Label"
+import Task from "./Task";
+import UI from "./UI";
 
 
 export default class Catalog {
     constructor() {
         this.catalog = [];
+        this.catalog.push(new Label("All tasks"), new Label("Today"), new Label("This week"), new Label("Someday"));
     }
 
     setCatalog(catalog) {
@@ -28,21 +31,72 @@ export default class Catalog {
     }
 
    loadLabelList() {
-        this.catalog.forEach(label => {
-            label.create();
-        })
+        this.catalog.forEach(label => Catalog.checkingDefaultLabels(label) ? 
+            label.create() : label.createDefault())
+    }
+
+    static checkingDefaultLabels(label) {
+        return (
+             label.getName() !== "Today" && 
+             label.getName() !== "This week" && 
+             label.getName() !=="All tasks" && 
+             label.getName() !== "Someday"
+         )
     }
  
     deleteTask(label, task) {
         this.getLabel(label).deleteTask(task);
     }
 
-
-    install() {
-        catalog.addLabel(new Label("All tasks"));
-        catalog.addLabel(new Label("Today"));
-        catalog.addLabel(new Label("This week"));
-        catalog.addLabel(new Label("Someday"));
-
+    updateDefaultTasks() {
+        this.updateAllTasks();
+        this.updateTodayTasks();
+        this.updateWeekTasks()
+        this.updateSomeDayTasks()
     }
+
+    updateAllTasks() {
+        this.getLabel("All tasks").tasks = [];
+        this.getCatalog().forEach(label => {
+            if (!Catalog.checkingDefaultLabels(label)) return;
+            label.getTasks().forEach(task => {
+                    this.getLabel("All tasks").addTask(task)
+            })
+        })
+    }
+
+    updateTodayTasks() {
+        this.getLabel("Today").tasks = [];
+        this.getCatalog().forEach(label => {
+            if (!Catalog.checkingDefaultLabels(label)) return;
+            label.getTodayTasks().forEach(task => {
+                this.getLabel("Today").addTask(task)
+            })   
+        })
+    }
+
+    updateWeekTasks() {
+        this.getLabel("This week").tasks = [];
+        this.getCatalog().forEach(label => {
+            if (!Catalog.checkingDefaultLabels(label)) return;
+            label.getWeekTasks().forEach(task => {
+                this.getLabel("This week").addTask(task);
+            })   
+        })
+    }
+
+    updateSomeDayTasks() {
+        this.getLabel("Someday").tasks = [];
+        this.getCatalog().forEach(label => {
+            if (!Catalog.checkingDefaultLabels(label)) return;
+            label.getSomedayTasks().forEach(task => {
+                this.getLabel("Someday").addTask(task);
+            })   
+        })
+    }
+
+
+
+
+
 }

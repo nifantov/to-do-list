@@ -7,6 +7,5 @@ import UI from "./Modules/UI"
 
 
 document.addEventListener('DOMContentLoaded', UI.load)
-//LocalStorage.getCatalog();
-console.log(Math.random())
+
 

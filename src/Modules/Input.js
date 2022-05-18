@@ -12,7 +12,7 @@ export default class Input {
      open() {
         const buttonContainer = document.getElementById(this.idButtonContainer);
         const button = document.getElementById(this.idButton);
-        
+        console.log(button)
         const input = document.createElement("input")
         const acceptButton = document.createElement("button");
         const cancelButton = document.createElement("button");
@@ -27,6 +27,7 @@ export default class Input {
 
         acceptButton.onclick = () => {
             UI.add(this.type, input.value);
+            console.log(this.type)
             this.close();
         }
         cancelButton.onclick = () => this.close();
