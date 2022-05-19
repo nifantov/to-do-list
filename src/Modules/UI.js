@@ -30,9 +30,17 @@ export default class UI {
         const labelsButtons = document.querySelectorAll(".label-name");
         labelsButtons.forEach(label => {
             label.onclick = () => {
-                const labelName = label.textContent;
-                LocalStorage.getCatalog().getLabel(labelName).openLabel();
-                UI.buttonsListeners()
+                const currentLabel = LocalStorage.getCatalog().getLabel(label.textContent)
+                currentLabel.openLabel();
+                const addTaskButton = document.getElementById("addTask");
+                if (!Catalog.checkingDefaultLabels(currentLabel)) {
+                    addTaskButton.classList.remove("active");
+                    addTaskButton.classList.add("notactive");
+                } 
+                else {
+                    addTaskButton.classList.remove("notactive")
+                    addTaskButton.classList.add("active");
+                }
             };
         }) 
 
@@ -40,9 +48,12 @@ export default class UI {
 
     static add(type, name) {
         if (type === "label") {
-            LocalStorage.addLabel(new Label(name));
-            LocalStorage.getCatalog().getLabel(name).create()
-            LocalStorage.getCatalog().getLabel(name).openLabel();
+            const newLabel = new Label(name)
+            LocalStorage.addLabel(newLabel);
+            newLabel.create()
+            newLabel.openLabel();
+            
+
             UI.buttonsListeners();
         }
 
