@@ -2,12 +2,11 @@ import Catalog from "./Catalog";
 import UI from "./UI";
 import format from "date-fns/format";
 export default class Task {
-    constructor(name, label, date = "no date") {
+    constructor(name, label, date = "no date", done = false) {
         this.name = name;
         this.label = label;
         this.date = date;
-        
-
+        this.done = done;
     }
 
     //Methods
@@ -27,6 +26,14 @@ export default class Task {
         return this.date;
     }
 
+    setDone() {
+        this.isDone() ? this.done = false : this.done = true;
+    }
+
+    isDone() {
+        return this.done;
+    }
+
     dateFormat() {
         const day = this.date.split('/')[0]
         const month = this.date.split('/')[1]
@@ -36,21 +43,23 @@ export default class Task {
 
      
     create() {
-        
-        
         const container = document.getElementById("task-list");
 
         const task = document.createElement("div");
         task.classList.add("task");
-        
-        const checkbox = document.createElement("div");
-        checkbox.classList.add("checkbox");
-        checkbox.onclick = () => checkbox.classList.toggle("close");
-        
 
         const taskName = document.createElement("p");
         taskName.classList.add("task-name");
         taskName.textContent = this.name;
+
+        const checkbox = document.createElement("div");
+        checkbox.classList.add("checkbox");
+        checkbox.onclick = () => {
+            checkbox.classList.toggle("close");
+            taskName.classList.toggle("checked");
+            date.classList.toggle("checked");
+            UI.doneTask(this.label, this.name);
+        }
 
         const input = document.createElement("input");
         input.classList.add("input-rename");
@@ -103,6 +112,12 @@ export default class Task {
             date.classList.add("notactive");
             task.appendChild(inputDate);
         }
+
+        if (this.isDone()) {
+            taskName.classList.add("checked");
+            date.classList.add("checked");
+        }
+        
 
         container.appendChild(task);
         task.appendChild(checkbox);

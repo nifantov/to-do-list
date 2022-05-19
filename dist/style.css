@@ -169,3 +169,7 @@ body {
 h2 {
     text-align: center;
 }
+
+.checked {
+    text-decoration: line-through;
+}

@@ -23,7 +23,7 @@ export default class UI {
     static buttonsListeners() {
         const addLabelButton = document.getElementById("addLabel");
         const addTaskButton = document.getElementById("addTask");
-        UI.updateDefaultLabels();
+        
         addLabelButton.onclick = () => createLabel.open();
         addTaskButton.onclick = () => createTask.open();   
 
@@ -100,10 +100,9 @@ export default class UI {
         catalog.getLabel("Today").openLabel(); 
         
     }
-    /////
-    static updateDefaultLabels() {
-        
-        LocalStorage.updateAllTasks();
+
+    static doneTask(label, task) {
+        LocalStorage.doneTask(label, task);
     }
 
 

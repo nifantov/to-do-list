@@ -12,11 +12,11 @@ export default class Input {
      open() {
         const buttonContainer = document.getElementById(this.idButtonContainer);
         const button = document.getElementById(this.idButton);
-        console.log(button)
         const input = document.createElement("input")
         const acceptButton = document.createElement("button");
         const cancelButton = document.createElement("button");
 
+        button.classList.remove("active");
         button.classList.add("notactive");
 
         acceptButton.textContent = "yes";
@@ -46,7 +46,8 @@ export default class Input {
         const cancelButton = document.getElementById("cancelButton");
         const button = document.getElementById(this.idButton);
         
-        button.classList.toggle("notactive");
+        button.classList.remove("notactive");
+        button.classList.add("active");
 
         input.remove();
         acceptButton.remove();

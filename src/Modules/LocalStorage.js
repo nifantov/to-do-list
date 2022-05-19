@@ -6,7 +6,6 @@ import Task from "./Task";
 export default class LocalStorage {
 
     static saveCatalog(catalog) {
-        
         catalog.updateDefaultTasks();
         localStorage.setItem("catalog", JSON.stringify(catalog));
           
@@ -79,10 +78,18 @@ export default class LocalStorage {
         console.log(LocalStorage.getCatalog())
     }
 
-    static updateAllTasks() {
+    /* static updateAllTasks() {
         const catalog = LocalStorage.getCatalog();
         catalog.updateAllTasks();
         LocalStorage.saveCatalog(catalog);
         console.log(LocalStorage.getCatalog());
+    } */
+
+    static doneTask(label, task) {
+        const catalog = LocalStorage.getCatalog();
+        catalog.getLabel(label).findTask(task).setDone();
+        LocalStorage.saveCatalog(catalog);
+        console.log(LocalStorage.getCatalog())
+        
     }
 }
